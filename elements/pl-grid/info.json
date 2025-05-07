@@ -1,0 +1,13 @@
+{
+    "controller": "pl-grid.py",
+    "dependencies": {
+        "elementScripts": [
+            "pl-grid.js",
+            "gridstack-all.js"
+        ],
+        "elementStyles": [
+            "pl-grid.css",
+            "gridstack.min.css"
+        ]
+    }
+}

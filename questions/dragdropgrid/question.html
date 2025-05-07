@@ -1,0 +1,50 @@
+<pl-question-panel>
+  <p>
+    The question below was designed to showcase the different features of <code>pl-grid</code>. This element creates a 
+    2-dimensional grid of blocks that can be filled by students via drag and drop. The element is auto-graded based on 
+    the number of blocks that match the sample solution (excluding pre-filled blocks). It was primarily designed for
+    questions related to trace tables (see the other example questions), but can also be used more broadly when an 
+    answer in the form of a 2D grid is required.
+  </p>
+</pl-question-panel>
+<div class="card my-2">
+  <div class="card-header">Element Demo</div>
+  <div class="card-body">
+    <pl-question-panel>
+    <p>Below is an example of a generic question where objects have to be sorted into a specific row and column of the 
+      grid. The attribute <code>color-column</code> is set to <code>true</code>, so blocks that are placed in a column 
+      are automatically colored to match the pre-filled blocks. Pre-filled blocks cannot be edited, allowing the 
+      placement of guideline blocks that are not part of the student solution. The width and height of blocks can be 
+    customized, which is not used in this example, but in the other example questions.</p>
+  </pl-question-panel>
+<pl-grid color-column="true">
+    <pl-source> <!-- Source grid with supply of draggable blocks -->
+        <pl-element x="0" y="0">Banana</pl-element>
+        <pl-element x="2" y="0" color="#ffffff">The Sun</pl-element>
+        <pl-element x="4" y="0" color="#ffffff">Broccoli</pl-element>
+        <pl-element x="6" y="0" color="#ffffff">Emeralds</pl-element>
+    </pl-source>
+
+    <pl-destination> <!-- Pre-defined destination grid -->
+        <pl-element x="2" y="0" color="#ffff99">Is yellow</pl-element>
+        <pl-element x="4" y="0" color="#99ff99">Is green</pl-element>
+        <pl-element x="0" y="1" color="#dddddd">Is edible</pl-element>
+        <pl-element x="0" y="2" color="#dddddd">Is not edible</pl-element>
+    </pl-destination>
+    
+    <pl-answer-grid> <!-- Solution grid (used for grading) -->
+        <pl-element x="2" y="0" color="#ffff99">Is yellow</pl-element>
+        <pl-element x="4" y="0" color="#99ff99">Is green</pl-element>
+        <pl-element x="0" y="1" color="#dddddd">Is edible</pl-element>
+        <pl-element x="0" y="2" color="#dddddd">Is not edible</pl-element>
+        <pl-element x="2" y="1">Banana</pl-element>
+        <pl-element x="2" y="2" color="#ffffff">The Sun</pl-element>
+        <pl-element x="4" y="1" color="#ffffff">Broccoli</pl-element>
+        <pl-element x="4" y="2" color="#ffffff">Emeralds</pl-element>
+    </pl-answer-grid>
+</pl-grid>
+  <pl-question-panel>
+
+  </div>
+</div>
+</pl-question-panel>

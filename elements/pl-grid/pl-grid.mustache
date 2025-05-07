@@ -1,0 +1,40 @@
+{{#question}}
+
+  <div class="d-flex flex-wrap list-group">
+    <div class="card-header pl-grid-header list-group-item-primary">
+      <span class="me-2">Drag from here:</span>
+    </div>
+    <div class="grid-stack source-grid" id="source-grid-id"></div>
+    
+    <div class="card-header pl-grid-header list-group-item-primary">
+      <span class="me-2">Construct your solution here</span>
+    </div>
+    <div class="grid-stack dest-grid" id="dest-grid-id"></div>
+  </div>
+
+  <input id="answer-input" type="hidden" name="test-input" value=""/>
+  <input id="question-data" type="hidden" name="test-load-data" value='{{{load_data}}}'/>
+
+{{/question}}
+
+{{#submission}}
+  {{#student_submission}}
+    <div class="card-header pl-grid-header list-group-item-primary">
+      <span class="me-2">Your solution here</span>
+    </div>
+    <div class="grid-stack sub-grid" id="sub-grid-id"></div>
+
+    <input class="submission-data" type="hidden" name="test-load-data-sub" value='{{{load_data_sub}}}'/>
+  {{/student_submission}}
+{{/submission}}
+
+{{#true_answer}}
+
+  <div class="card-header pl-grid-header list-group-item-primary">
+    <span class="me-2">Your solution here</span>
+  </div>
+  <div class="grid-stack sol-grid" id="sol-grid-id"></div>
+
+  <input id="solution-data" type="hidden" name="test-load-data-sol" value='{{{load_data_sol}}}'/>
+
+{{/true_answer}}

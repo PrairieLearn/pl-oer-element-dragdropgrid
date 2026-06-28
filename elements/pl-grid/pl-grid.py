@@ -1,11 +1,10 @@
-import random
-import math
 import json
 from typing import TypedDict
 
 import chevron
 import lxml.html
-import prairielearn as pl
+
+
 class GridAnswerData(TypedDict):
     x: int
     y: int
@@ -14,6 +13,7 @@ class GridAnswerData(TypedDict):
     content: str
     noMove: bool
     locked: bool
+
 
 def prepare(element_html, data):
     element = lxml.html.fragment_fromstring(element_html)
@@ -34,7 +34,7 @@ def prepare(element_html, data):
                         "h": int(inner_tag.get("h", 1)),
                         "content": inner_tag.text_content().strip(),
                         "noMove": False,
-                        "locked": False
+                        "locked": False,
                     }
                     correct_answers.append(answer_data_dict)
         elif html_tags.tag == "pl-destination":
@@ -48,7 +48,7 @@ def prepare(element_html, data):
                         "h": int(inner_tag.get("h", 1)),
                         "content": content,
                         "noMove": True,
-                        "locked": True
+                        "locked": True,
                     }
                     given_blocks.append(given_block_dict)
                     color = inner_tag.get("color", "#ffffff")
@@ -64,16 +64,22 @@ def prepare(element_html, data):
                         "h": int(inner_tag.get("h", 1)),
                         "content": content,
                         "noMove": False,
-                        "locked": False
+                        "locked": False,
                     }
                     source_blocks.append(source_block_dict)
                     color = inner_tag.get("color", "#ffffff")
                     color_map[content] = color
-    
+
     color_column = element.get("color-column", "false").lower() == "true"
 
     data["correct_answers"]["test"] = correct_answers
-    data["params"]["test"] = { "source": source_blocks, "given": given_blocks, "colors": color_map, "color_column": color_column}
+    data["params"]["test"] = {
+        "source": source_blocks,
+        "given": given_blocks,
+        "colors": color_map,
+        "color_column": color_column,
+    }
+
 
 def render(element_html, data):
     if data["panel"] == "question":
@@ -84,15 +90,15 @@ def render(element_html, data):
                 dummy = block.copy()
                 dummy["noMove"] = True
                 dummy["locked"] = True
-                if not dummy in data["params"]["test"]["given"]:
+                if dummy not in data["params"]["test"]["given"]:
                     data["params"]["test"]["given"].append(block)
         html_params = {
             "question": True,
-            "load_data": json.dumps(data["params"]["test"])
+            "load_data": json.dumps(data["params"]["test"]),
         }
-        with open('pl-grid.mustache', 'r') as f:
+        with open("pl-grid.mustache", "r") as f:
             return chevron.render(f, html_params).strip()
-        
+
     elif data["panel"] == "submission":
         all_submissions = data["submitted_answers"].get("test", [])
 
@@ -100,21 +106,20 @@ def render(element_html, data):
             "submission": True,
             "student_submission": [
                 {"load_data_sub": json.dumps(sub)} for sub in all_submissions
-            ]
+            ],
         }
 
-        with open('pl-grid.mustache', 'r') as f:
+        with open("pl-grid.mustache", "r") as f:
             return chevron.render(f, html_params).strip()
 
-        
     elif data["panel"] == "answer":
         html_params = {
             "true_answer": True,
-            "load_data_sol": json.dumps(data["correct_answers"].get("test", []))
+            "load_data_sol": json.dumps(data["correct_answers"].get("test", [])),
         }
-        with open('pl-grid.mustache', 'r') as f:
+        with open("pl-grid.mustache", "r") as f:
             return chevron.render(f, html_params).strip()
-    
+
 
 def parse(element_html, data):
     submission = data["raw_submitted_answers"].get("test-input", "")
@@ -122,7 +127,7 @@ def parse(element_html, data):
         new_submission = json.loads(submission)
     else:
         new_submission = []
-    
+
     # Initialize as list of submissions if not already
     if "test" not in data["submitted_answers"]:
         data["submitted_answers"]["test"] = []
@@ -147,9 +152,9 @@ def grade(element_html, data):
         cell["locked"] = False
         cell["noMove"] = False
 
-        if (cell in correct_answers):
+        if cell in correct_answers:
             correct_cells += 1
-        
+
     if full_score_possible > 0:
         score = (correct_cells - len(given)) / full_score_possible
         score = max(score, 0)  # don't allow negative scores
@@ -158,7 +163,7 @@ def grade(element_html, data):
 
     if score >= 0.99:
         score = 1
-    
+
     data["partial_scores"]["test"] = {
         "score": score,
         "feedback": f"{correct_cells} out of {full_score_possible} cells matched.",
